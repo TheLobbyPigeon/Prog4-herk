@@ -11,7 +11,7 @@ const userServices = {
     getAllUsers: async () => {
         try {
             const users = await new Promise((resolve, reject) => {
-                db.query('SELECT * FROM `gguser`', (err, results) => {
+                db.query('SELECT * FROM `user`', (err, results) => {
                     if (err) {
                         return reject(`Error executing query: ${err}`);
                     }
@@ -28,7 +28,7 @@ const userServices = {
     getUserById: async (id) => {
         try {
             const user = await new Promise((resolve, reject) => {
-                db.query('SELECT * FROM `gguser` WHERE UserId = ?', [id], (err, results) => {
+                db.query('SELECT * FROM `user` WHERE UserId = ?', [id], (err, results) => {
                     if (err) {
                         return reject(`Error executing query: ${err}`);
                     }
@@ -54,7 +54,7 @@ const userServices = {
 
             //Update user data
             const user = await new Promise((resolve, reject) => {
-                db.query('UPDATE gguser SET ? WHERE UserId = ?', [updatedUserData, userId], (err, results) => {
+                db.query('UPDATE user SET ? WHERE UserId = ?', [updatedUserData, userId], (err, results) => {
                     if (err) {
                         return reject(`Error executing query: ${err}`);
                     }
@@ -63,7 +63,7 @@ const userServices = {
                     }
 
                     //Get updated user data
-                    db.query('SELECT * FROM gguser WHERE UserId = ?', [userId], (err, results2) => {
+                    db.query('SELECT * FROM user WHERE UserId = ?', [userId], (err, results2) => {
                         if (err) {
                             return reject(`Error executing query: ${err}`);
                         }
@@ -82,7 +82,7 @@ const userServices = {
     getUserByEmail: async (email) => {
         try {
             const user = await new Promise((resolve, reject) => {
-                db.query('SELECT * FROM `gguser` WHERE Email = ?', [email], (err, results) => {
+                db.query('SELECT * FROM `user` WHERE Email = ?', [email], (err, results) => {
                     if (err) {
                         return reject(`Error executing query: ${err}`);
                     }
@@ -107,13 +107,13 @@ const userServices = {
             newUserData.Password = await userServices.encryptPassword(newUserData.Password);
 
             const user = await new Promise((resolve, reject) => {
-                db.query('INSERT INTO `gguser` SET ?', newUserData, (err, results) => {
+                db.query('INSERT INTO `user` SET ?', newUserData, (err, results) => {
                     if (err) {
                         return reject(`Error executing query: ${err}`);
                     }
 
                     // Get new user data
-                    db.query('SELECT * FROM `gguser` WHERE UserId = ?', [results.insertId], (err, results2) => {
+                    db.query('SELECT * FROM `user` WHERE UserId = ?', [results.insertId], (err, results2) => {
                         if (err) {
                             return reject(`Error executing query: ${err}`);
                         }
